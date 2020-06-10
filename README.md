@@ -1,3 +1,3 @@
 # Spelling Checker in typescript
 
-Remember to install packages before running.
+Remember to `npm install` packages before running.
