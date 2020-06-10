@@ -1,13 +1,20 @@
+let node = {
+    key : null
+  , value : null
+  , children : []
+}
+
+
 function Trie() {
 	this.head = {
-			key : ''
-		, children: {}
+		key : '',
+        children: {}
 	}
 }
 
 Trie.prototype.add = function(key) {
 
-	var curNode = this.head
+	let curNode = this.head
 		, newNode = null
 		, curChar = key.slice(0,1);
 
@@ -38,7 +45,7 @@ Trie.prototype.add = function(key) {
 };
 
 Trie.prototype.search = function(key) {
-	var curNode = this.head
+	let curNode = this.head
 		, curChar = key.slice(0,1)
 		, d = 0;
 
@@ -60,7 +67,7 @@ Trie.prototype.search = function(key) {
 }
 
 Trie.prototype.remove = function(key) {
-	var d = this.search(key);
+	let d = this.search(key);
 	if (d > -1){
 		removeH(this.head, key, d);
 	}
@@ -71,7 +78,7 @@ function removeH(node, key, depth) {
 		return true;
 	} 
 
-	var curChar = key.slice(0,1);
+	let curChar = key.slice(0,1);
 
 	if (removeH(node.children[curChar], key.slice(1), depth-1)) {
 		delete node.children[curChar];
