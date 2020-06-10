@@ -42,17 +42,26 @@
                     Salam, papalam, xuy, pizda 
                 </div>
 
+                <form action="/">
+                
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span></span>
+                      </div>
+                      <textarea class="form-control" aria-label="With textarea" placeholder="Enter your words (seperated by comma or whitespace)."></textarea>
+                  </div> 
 
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span></span>
-                    </div>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Enter your text here."></textarea>
-                </div> 
-                <div class="button-container text-center">
-                    <button type="button" class="btn btn-outline-primary text-center check-button">Add Words</button>
-                </div>
+                  <div class="form-group">
+                    <label for="exampleFormControlFile1">File with words (seperated by comma or whitespaces)</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                  </div>
 
+                  <div class="button-container text-center">
+                      <input type="submit" class="btn btn-outline-primary text-center check-button" value="Add Words">
+                  </div>
+
+                </form>
+ 
 
 
             </div>

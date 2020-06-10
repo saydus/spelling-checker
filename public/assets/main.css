@@ -39,3 +39,11 @@ input:focus, textarea:focus, select:focus{
 .submit-btn{ 
     margin-top: 6px; 
 } 
+
+.form-group {
+    margin-top: 10px; 
+} 
+
+input.form-control-file{
+    cursor: pointer;
+}
