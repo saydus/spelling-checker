@@ -1,8 +1,8 @@
-let node = {
-    key : null
-  , value : null
-  , children : []
-}
+//  node = {
+//     key : null
+//   , value : null
+//   , children : []
+// }
 
 
 function Trie() {
