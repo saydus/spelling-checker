@@ -1,69 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/main.css">
-    
-    <script src="assets/main.js"></script>
-    
-    <title>Spelling Checker</title>
-  </head>
-  <body>
-     
-            <div class="container">
-                
-                <header class="navbar">
-                    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex"> 
+	<title>Svelte app</title>
 
-                    <a href="/" class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3 add-item">
-                        Add Words
-                    </a>
-                    </ul>
-                </header>
+	<link rel='icon' type='image/png' href='/favicon.png'>
+	<link rel='stylesheet' href='/global.css'>
+	<link rel='stylesheet' href='/build/bundle.css'>
+	<link rel="stylesheet" href="extra.css">
 
+	<script defer src='/build/bundle.js'></script>
+</head>
 
-                <h1 class="text-center heading">Spelling Checker</h1>
-                <!-- If all words are right: -->
-
-
-                <div class="alert alert-success words-status" role="alert">
-                    All words are correct!
-                </div>
-
-
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span></span>
-                    </div>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Enter your text here."></textarea>
-                </div> 
-                <div class="button-container text-center">
-                    <button type="button" class="btn btn-outline-primary text-center check-button">Check</button>
-                </div>
-
-
-                <div class="alert alert-danger" role="alert">
-                    <h5>These words are not in the library:</h5>
-
-                    Salam, papalam, xuy, pizda
-                    <br> 
-                    <form action="/add">
-                    <input type="hidden" value="Salam, papalam, xuy, pizda" >
-                    <input type="submit" class="btn btn-outline-primary submit-btn" value="Add these words">
-                    </form> 
-                </div>
-
-            </div>
-             
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  </body>
+<body>
+</body>
 </html>

@@ -1,0 +1,49 @@
+@font-face {
+    font-family: BebasNeue-Regular;
+    src: url(BebasNeue-Regular.ttf);
+}
+
+
+.heading {
+    font-family: BebasNeue-Regular;
+    font-size: 4rem;
+    margin-top: 10%;
+}
+
+body {
+    background: #eceaee;
+}
+
+textarea.form-control{
+    border-radius: 5px !important;
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none !important;
+}
+ 
+
+.check-button{
+    margin: 15px;
+}
+
+.add-item{
+    background-color: #007bff;
+    color: white;
+}
+
+.add-item:hover{
+    color: white;
+}
+
+.submit-btn{ 
+    margin-top: 6px; 
+} 
+
+.form-group {
+    margin-top: 10px; 
+} 
+
+input.form-control-file{
+    cursor: pointer;
+}
