@@ -23,8 +23,7 @@ export default {
 			css: css => {
 				css.write('public/build/bundle.css');
 			}
-		}),
-		css({ output: 'public/extra.css' }),
+		}), 
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In

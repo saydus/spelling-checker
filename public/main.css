@@ -29,11 +29,13 @@ input:focus, textarea:focus, select:focus{
 
 .add-item{
     background-color: #007bff;
-    color: white;
+    color: white !important;
 }
 
 .add-item:hover{
-    color: white;
+    background-color: #eceaee;
+    color: #007bff !important;
+    border: 1px solid;
 }
 
 .submit-btn{ 
