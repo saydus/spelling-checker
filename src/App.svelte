@@ -8,14 +8,14 @@ let splitWords = (words) => {
 
 let getLettersOnly = (word) => {
 	// Replace all non-numeric 
-	return word.replace(/\W/g, '') + ' ';
+	return word.replace(/\W/g, '');
 }
 
 let formatWords = (str) => {
 	return splitWords(str).map(getLettersOnly);
 }
 
-let words = "Words, words"
+let input = '';
 
 </script>
 
@@ -66,7 +66,7 @@ a.btn.btn-link:focus{
 		<div class="input-group-prepend">
 		  <span></span>
 		</div>
-		<textarea class="form-control" aria-label="With textarea" placeholder="Enter your text here."></textarea>
+		<textarea class="form-control" bind:value={input} aria-label="With textarea" placeholder="Enter your text here."></textarea>
 	</div> 
 	<div class="button-container text-center">
 		<button type="button" class="btn btn-outline-primary text-center check-button">Check</button>
@@ -75,7 +75,7 @@ a.btn.btn-link:focus{
 
 	<div class="alert alert-danger" role="alert">
 		<h5>These words are not in the library:</h5>
-		{words}
+		{input}
 		<br> 
 		<form action="/add">
 		<input type="hidden" value="Salam, papalam, xuy, pizda" >
@@ -83,25 +83,22 @@ a.btn.btn-link:focus{
 		</form> 
 	</div>
 
-
+	<!-- Show only if words are entered --> 
 	<div id="accordion">
-	<div class="card">
-		<div class="card-header" id="headingOne">
-		<h5 class="mb-0">
-			<a class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-			Words entered:
-			</a>
-		</h5>
-		</div>
+		<div class="card">
+			<div class="card-header" id="headingOne">
+			<h5 class="mb-0">
+				<a class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Words entered:</a>
+			</h5>
+			</div>
 
-		<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-		<div class="card-body">
-			Following words are being checked: {words}
+			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+			<div class="card-body">
+				Following words are being checked: {formatWords(input)}
+			</div>
+			</div>
 		</div>
-		</div>
-	</div>
-	
-	</div>
+	</div> 
 
 
 

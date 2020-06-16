@@ -43,6 +43,10 @@ var app = (function () {
     function space() {
         return text(' ');
     }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
@@ -51,6 +55,9 @@ var app = (function () {
     }
     function children(element) {
         return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
     }
     function custom_event(type, detail) {
         const e = document.createEvent('CustomEvent');
@@ -261,12 +268,32 @@ var app = (function () {
         dispatch_dev("SvelteDOMRemove", { node });
         detach(node);
     }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+            dispose();
+        };
+    }
     function attr_dev(node, attribute, value) {
         attr(node, attribute, value);
         if (value == null)
             dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
         else
             dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.data === data)
+            return;
+        dispatch_dev("SvelteDOMSetData", { node: text, data });
+        text.data = data;
     }
     function validate_slots(name, slot, keys) {
         for (const slot_key of Object.keys(slot)) {
@@ -335,6 +362,11 @@ var app = (function () {
     	let t18;
     	let div7;
     	let div6;
+    	let t19;
+    	let t20_value = /*formatWords*/ ctx[1](/*input*/ ctx[0]) + "";
+    	let t20;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
@@ -364,7 +396,7 @@ var app = (function () {
     			h50 = element("h5");
     			h50.textContent = "These words are not in the library:";
     			t11 = space();
-    			t12 = text(/*words*/ ctx[0]);
+    			t12 = text(/*input*/ ctx[0]);
     			t13 = space();
     			br = element("br");
     			t14 = space();
@@ -382,74 +414,72 @@ var app = (function () {
     			t18 = space();
     			div7 = element("div");
     			div6 = element("div");
-
-    			div6.textContent = `
-			Following words are being checked: ${/*words*/ ctx[0]}`;
-
+    			t19 = text("Following words are being checked: ");
+    			t20 = text(t20_value);
     			attr_dev(a0, "href", "/");
     			attr_dev(a0, "class", "btn btn-bd-download d-none d-lg-inline-block add-item");
-    			add_location(a0, file, 48, 2, 722);
+    			add_location(a0, file, 48, 2, 705);
     			attr_dev(ul, "class", "navbar-nav flex-row ml-md-auto d-none d-md-flex");
-    			add_location(ul, file, 46, 2, 657);
+    			add_location(ul, file, 46, 2, 640);
     			attr_dev(header, "class", "navbar");
-    			add_location(header, file, 45, 1, 631);
+    			add_location(header, file, 45, 1, 614);
     			attr_dev(h1, "class", "text-center heading");
-    			add_location(h1, file, 55, 1, 840);
+    			add_location(h1, file, 55, 1, 823);
     			attr_dev(div0, "class", "alert alert-success words-status");
     			attr_dev(div0, "role", "alert");
-    			add_location(div0, file, 59, 1, 931);
-    			add_location(span, file, 66, 4, 1093);
+    			add_location(div0, file, 59, 1, 914);
+    			add_location(span, file, 66, 4, 1076);
     			attr_dev(div1, "class", "input-group-prepend");
-    			add_location(div1, file, 65, 2, 1055);
+    			add_location(div1, file, 65, 2, 1038);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "aria-label", "With textarea");
     			attr_dev(textarea, "placeholder", "Enter your text here.");
-    			add_location(textarea, file, 68, 2, 1118);
+    			add_location(textarea, file, 68, 2, 1101);
     			attr_dev(div2, "class", "input-group");
-    			add_location(div2, file, 64, 1, 1027);
+    			add_location(div2, file, 64, 1, 1010);
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "btn btn-outline-primary text-center check-button");
-    			add_location(button, file, 71, 2, 1279);
+    			add_location(button, file, 71, 2, 1281);
     			attr_dev(div3, "class", "button-container text-center");
-    			add_location(div3, file, 70, 1, 1234);
-    			add_location(h50, file, 76, 2, 1432);
-    			add_location(br, file, 78, 2, 1489);
+    			add_location(div3, file, 70, 1, 1236);
+    			add_location(h50, file, 76, 2, 1434);
+    			add_location(br, file, 78, 2, 1491);
     			attr_dev(input0, "type", "hidden");
     			input0.value = "Salam, papalam, xuy, pizda";
-    			add_location(input0, file, 80, 2, 1520);
+    			add_location(input0, file, 80, 2, 1522);
     			attr_dev(input1, "type", "submit");
     			attr_dev(input1, "class", "btn btn-outline-primary submit-btn");
     			input1.value = "Add these words";
-    			add_location(input1, file, 81, 2, 1580);
+    			add_location(input1, file, 81, 2, 1582);
     			attr_dev(form, "action", "/add");
-    			add_location(form, file, 79, 2, 1497);
+    			add_location(form, file, 79, 2, 1499);
     			attr_dev(div4, "class", "alert alert-danger");
     			attr_dev(div4, "role", "alert");
-    			add_location(div4, file, 75, 1, 1384);
+    			add_location(div4, file, 75, 1, 1386);
     			attr_dev(a1, "class", "btn btn-link svelte-5f4xul");
     			attr_dev(a1, "data-toggle", "collapse");
     			attr_dev(a1, "data-target", "#collapseOne");
     			attr_dev(a1, "aria-expanded", "true");
     			attr_dev(a1, "aria-controls", "collapseOne");
-    			add_location(a1, file, 90, 3, 1799);
+    			add_location(a1, file, 90, 4, 1846);
     			attr_dev(h51, "class", "mb-0");
-    			add_location(h51, file, 89, 2, 1778);
+    			add_location(h51, file, 89, 3, 1824);
     			attr_dev(div5, "class", "card-header");
     			attr_dev(div5, "id", "headingOne");
-    			add_location(div5, file, 88, 2, 1734);
+    			add_location(div5, file, 88, 3, 1779);
     			attr_dev(div6, "class", "card-body");
-    			add_location(div6, file, 97, 2, 2070);
+    			add_location(div6, file, 95, 3, 2113);
     			attr_dev(div7, "id", "collapseOne");
     			attr_dev(div7, "class", "collapse show");
     			attr_dev(div7, "aria-labelledby", "headingOne");
     			attr_dev(div7, "data-parent", "#accordion");
-    			add_location(div7, file, 96, 2, 1969);
+    			add_location(div7, file, 94, 3, 2011);
     			attr_dev(div8, "class", "card");
-    			add_location(div8, file, 87, 1, 1713);
+    			add_location(div8, file, 87, 2, 1757);
     			attr_dev(div9, "id", "accordion");
-    			add_location(div9, file, 86, 1, 1691);
+    			add_location(div9, file, 86, 1, 1734);
     			attr_dev(div10, "class", "container");
-    			add_location(div10, file, 43, 0, 589);
+    			add_location(div10, file, 43, 0, 572);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -469,6 +499,7 @@ var app = (function () {
     			append_dev(div1, span);
     			append_dev(div2, t6);
     			append_dev(div2, textarea);
+    			set_input_value(textarea, /*input*/ ctx[0]);
     			append_dev(div10, t7);
     			append_dev(div10, div3);
     			append_dev(div3, button);
@@ -493,12 +524,28 @@ var app = (function () {
     			append_dev(div8, t18);
     			append_dev(div8, div7);
     			append_dev(div7, div6);
+    			append_dev(div6, t19);
+    			append_dev(div6, t20);
+
+    			if (!mounted) {
+    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[2]);
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*input*/ 1) {
+    				set_input_value(textarea, /*input*/ ctx[0]);
+    			}
+
+    			if (dirty & /*input*/ 1) set_data_dev(t12, /*input*/ ctx[0]);
+    			if (dirty & /*input*/ 1 && t20_value !== (t20_value = /*formatWords*/ ctx[1](/*input*/ ctx[0]) + "")) set_data_dev(t20, t20_value);
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div10);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -521,14 +568,14 @@ var app = (function () {
 
     	let getLettersOnly = word => {
     		// Replace all non-numeric 
-    		return word.replace(/\W/g, "") + " ";
+    		return word.replace(/\W/g, "");
     	};
 
     	let formatWords = str => {
     		return splitWords(str).map(getLettersOnly);
     	};
 
-    	let words = "Words, words";
+    	let input = "";
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -538,25 +585,30 @@ var app = (function () {
     	let { $$slots = {}, $$scope } = $$props;
     	validate_slots("App", $$slots, []);
 
+    	function textarea_input_handler() {
+    		input = this.value;
+    		$$invalidate(0, input);
+    	}
+
     	$$self.$capture_state = () => ({
     		splitWords,
     		getLettersOnly,
     		formatWords,
-    		words
+    		input
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("splitWords" in $$props) splitWords = $$props.splitWords;
     		if ("getLettersOnly" in $$props) getLettersOnly = $$props.getLettersOnly;
-    		if ("formatWords" in $$props) formatWords = $$props.formatWords;
-    		if ("words" in $$props) $$invalidate(0, words = $$props.words);
+    		if ("formatWords" in $$props) $$invalidate(1, formatWords = $$props.formatWords);
+    		if ("input" in $$props) $$invalidate(0, input = $$props.input);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [words];
+    	return [input, formatWords, textarea_input_handler];
     }
 
     class App extends SvelteComponentDev {
