@@ -48,6 +48,9 @@ a.btn.btn-link:focus{
 	border: none;
 	box-shadow: none;
 }
+
+
+
  
 </style>
 
@@ -56,7 +59,7 @@ a.btn.btn-link:focus{
 	<header class="navbar">
 		<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex"> 
 
-		<a href="/" class="btn btn-bd-download d-none d-lg-inline-block add-item">
+		<a href="/add" class="btn btn-bd-download d-none d-lg-inline-block add-item">
 			Add Words 
 		</a>
 		</ul>
@@ -70,7 +73,16 @@ a.btn.btn-link:focus{
 	<div class="alert alert-success words-status" role="alert">
 		All words are correct!
 	</div>
-
+		
+	<div class="alert alert-danger" role="alert">
+		<h5>These words are not in the library:</h5>
+		{input}
+		<br> 
+		<form action="/add">
+		<input type="hidden" value="Salam, papalam, xuy, pizda" >
+		<input type="submit" class="btn btn-outline-primary submit-btn" value="Add these words">
+		</form> 
+	</div>
 
 	<div class="input-group">
 		<div class="input-group-prepend">
@@ -83,15 +95,7 @@ a.btn.btn-link:focus{
 	</div>
 
 
-	<div class="alert alert-danger" role="alert">
-		<h5>These words are not in the library:</h5>
-		{input}
-		<br> 
-		<form action="/add">
-		<input type="hidden" value="Salam, papalam, xuy, pizda" >
-		<input type="submit" class="btn btn-outline-primary submit-btn" value="Add these words">
-		</form> 
-	</div>
+
 
 	
 	<!-- Show only if words are entered --> 
