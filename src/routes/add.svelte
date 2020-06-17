@@ -19,7 +19,8 @@ let formatWords = (str) => {
 
 
 let checkWords = () => {
-	
+    // TODO: ajax request
+    
 }
 
 let input = '';
