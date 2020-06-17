@@ -1,18 +1,27 @@
 
 <script>
 
-let splitWords = (words) => {
-	// Use regular expression to split by comma or whitespace
-	return words.split(/(?:,| )+/); 
-}
-
 let getLettersOnly = (word) => {
 	// Replace all non-numeric 
-	return word.replace(/\W/g, '');
+	return word.replace(/[^a-zA-Z_]/g, '').toLowerCase();
 }
 
+
+
+let splitWords = (words) => {
+	// Use regular expression to split by comma or whitespace
+	return words.split(/[. ,:]+/)
+	// return words.split(/(?:,| )+/);  found this on the web 
+}
+
+
 let formatWords = (str) => {
-	return splitWords(str).map(getLettersOnly);
+	return splitWords(str).map(getLettersOnly).filter(Boolean);
+}
+
+
+let checkWords = () => {
+	
 }
 
 let input = '';
@@ -39,6 +48,7 @@ a.btn.btn-link:focus{
 	border: none;
 	box-shadow: none;
 }
+ 
 </style>
 
 <div class="container">
@@ -69,7 +79,7 @@ a.btn.btn-link:focus{
 		<textarea class="form-control" bind:value={input} aria-label="With textarea" placeholder="Enter your text here."></textarea>
 	</div> 
 	<div class="button-container text-center">
-		<button type="button" class="btn btn-outline-primary text-center check-button">Check</button>
+		<button type="button" class="btn btn-outline-primary text-center check-button" on:click={checkWords}>Check</button>
 	</div>
 
 
@@ -83,6 +93,7 @@ a.btn.btn-link:focus{
 		</form> 
 	</div>
 
+	
 	<!-- Show only if words are entered --> 
 	<div id="accordion">
 		<div class="card">
@@ -94,16 +105,18 @@ a.btn.btn-link:focus{
 
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
-				Following words are being checked: {formatWords(input)}
+				{#if input.length != 0}
+				{formatWords(input).map((word) => ' ' + word)}
+				{:else}
+				No words entered yet!
+				{/if}
+
 			</div>
 			</div>
 		</div>
 	</div> 
+	
 
 
 
-
-</div>
- 
-
- 
+</div> 
