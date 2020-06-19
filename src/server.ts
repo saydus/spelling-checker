@@ -7,21 +7,23 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 const app = express();
 
+
+
+app.use('/jalap', (req, res) => {
+	res.send('Post');
+});
+
 app.use(
 	compression({ threshold: 0 }),
 	sirv('static', { dev }),
 	sapper.middleware()
 );
 
-app.get('/ger', (req, res) => {
-	res.send('Post');
+
+app.listen(PORT, function () {
+	console.log(‘App is listening on port 3000!’);
 });
-
-
-app.listen(PORT, err => {
-	if (err) console.log('error', err);
-});
-
+ 
 
 
 

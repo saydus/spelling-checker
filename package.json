@@ -11,9 +11,9 @@
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
     "tsc": "tsc"
-
   },
   "dependencies": {
+    "@types/express": "^4.17.6",
     "compression": "^1.7.1",
     "express": "^4.17.1",
     "polka": "next",

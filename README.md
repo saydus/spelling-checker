@@ -1,6 +1,6 @@
 # Spelling Checker in Typescript
 
-Remember to `npm install` packages before running. To run the application, use `npm start`.
+Remember to `npm install` packages before running. To run the application: first, `npm run tsc`, and then, `npm start`.
 
 <br/>
 
