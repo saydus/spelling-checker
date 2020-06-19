@@ -7,19 +7,22 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 const app = express();
 
-app // using express
-	.use(
-		compression({ threshold: 0 }),
-		sirv('static', { dev }),
-		sapper.middleware()
-	)
-	.listen(PORT, err => {
-		if (err) console.log('error', err);
-	});
+app.use(
+	compression({ threshold: 0 }),
+	sirv('static', { dev }),
+	sapper.middleware()
+);
 
-app.post('/add', (req, res) => {
+app.get('/ger', (req, res) => {
 	res.send('Post');
 });
 
 
+app.listen(PORT, err => {
+	if (err) console.log('error', err);
+});
 
+
+
+
+  
