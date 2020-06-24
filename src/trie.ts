@@ -1,134 +1,115 @@
-class trie_node<T> {
-    public terminal: boolean;
-    public value: T;
-    public children: Map<string, trie_node<T>>;
-  
-    constructor() {
-      this.terminal = false;
-      this.children = new Map();
-    }
+class TrieNode {
+  public isEnding: boolean;
+  public character: string;
+  public children: Map<string, TrieNode>;
+
+  constructor(key?: string) {
+      this.isEnding = false;
+      this.character = key;
+      this.children = new Map<string, TrieNode>();
   }
-  
-  export class trie<T> {
-    private root: trie_node<T>;
-    private elements: number;
-  
+}
+ 
+class Trie {
+    private root: TrieNode;
+    private numWords: number;
     constructor() {
-      this.root = new trie_node<T>();
-      this.elements = 0;
+        this.numWords = 0;
+        this.root = new TrieNode();
     }
-  
-    public get length(): number {
-      return this.elements;
-    }
-  
-    public get(key: string): T | null {
-      const node = this.getNode(key);
-      if (node) {
-        return node.value;
-      }
-      return null;
-    }
-  
-    public contains(key: string): boolean {
-      const node = this.getNode(key);
-      return !!node;
-    }
-  
-    public insert(key: string, value: T): void {
-      let node = this.root;
-      let remaining = key;
-      while (remaining.length > 0) {
-        let child: trie_node<T> = null;
-        for (const childKey of node.children.keys()) {
-          const prefix = this.commonPrefix(remaining, childKey);
-          if (!prefix.length) {
-            continue;
-          }
-          if (prefix.length === childKey.length) {
-            // enter child node
-            child = node.children.get(childKey);
-            remaining = remaining.slice(childKey.length);
-            break;
-          } else {
-            // split the child
-            child = new trie_node<T>();
-            child.children.set(
-              childKey.slice(prefix.length),
-              node.children.get(childKey)
-            );
-            node.children.delete(childKey);
-            node.children.set(prefix, child);
-            remaining = remaining.slice(prefix.length);
-            break;
-          }
+
+
+    /**
+     * Insert word in the Trie.
+     *
+     * @param {string} word
+     * @memberof Trie
+     */
+    public insert(word: string): void {
+        let children = this.root.children;
+        let level = 0;
+
+        for (const char of word) {
+            let node;
+            if (children.get(char)) {
+                node = children.get(char);
+            } else {
+                node = new TrieNode(char);
+                children.set(char, node);
+            }
+
+            children = node.children;
+
+            if (level++ === word.length - 1) {
+                node.isEnding = true;
+            }
         }
-        if (!child && remaining.length) {
-          child = new trie_node<T>();
-          node.children.set(remaining, child);
-          remaining = "";
-        }
-        node = child;
-      }
-      if (!node.terminal) {
-        node.terminal = true;
-        this.elements += 1;
-      }
-      node.value = value;
+
+        this.numWords++;
     }
-  
-    public remove(key: string): void {
-      const node = this.getNode(key);
-      if (node) {
-        node.terminal = false;
-        this.elements -= 1;
-      }
+
+    /**
+     * Get number of words in the Trie
+     * 
+     * @returns {number}
+     * @memberof Trie
+     */
+    public getNumWords(): number {
+      return this.numWords;
     }
-  
-    public map<U>(prefix: string, func: (key: string, value: T) => U): U[] {
-      const mapped = [];
-      const node = this.getNode(prefix);
-      const stack: [string, trie_node<T>][] = [];
-      if (node) {
-        stack.push([prefix, node]);
-      }
-      while (stack.length) {
-        const [key, node] = stack.pop();
-        if (node.terminal) {
-          mapped.push(func(key, node.value));
-        }
-        for (const c of node.children.keys()) {
-          stack.push([key + c, node.children.get(c)]);
-        }
-      }
-      return mapped;
+
+
+    
+
+    /**
+     * Check if word is in the Trie.
+     *
+     * @param {string} word
+     * @returns {boolean}
+     * @memberof Trie
+     */
+    public search(word: string): boolean {
+        const node = this.getNode(word);
+        // if (node && node.isEnding) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return !!node && node.isEnding;
     }
-  
-    private getNode(key: string): trie_node<T> | null {
-      let node = this.root;
-      let remaining = key;
-      while (node && remaining.length > 0) {
-        let child = null;
-        for (let i = 1; i <= remaining.length; i += 1) {
-          child = node.children.get(remaining.slice(0, i));
-          if (child) {
-            remaining = remaining.slice(i);
-            break;
-          }
+
+    /**
+     * Get a node from the Trie.
+     *
+     * @param {string} word
+     * @returns {TrieNode}
+     * @memberof Trie
+     */
+    public getNode(word: string): TrieNode {
+        let node = null;
+        let currentNode = this.root.children;
+
+        for (const char of word) {
+            if (currentNode.get(char)) {
+                node = currentNode.get(char);
+                currentNode = node.children;
+            } else {
+                return null;
+            }
         }
-        node = child;
-      }
-      return remaining.length === 0 && node && node.terminal ? node : null;
+        return node;
     }
-  
-    private commonPrefix(a: string, b: string): string {
-      const shortest = Math.min(a.length, b.length);
-      let i = 0;
-      for (; i < shortest; i += 1) {
-        if (a[i] !== b[i]) {
-          break;
-        }
-      }
-      return a.slice(0, i);
+
+    /**
+     * Check if any word in Trie matches given prefix
+     *
+     * @param {string} prefix
+     * @returns {boolean}
+     * @memberof Trie
+     */
+    public startsWith(prefix: string): boolean {
+        return this.getNode(prefix) ? true : false;
     }
-  }
+}
+
+export { Trie };
