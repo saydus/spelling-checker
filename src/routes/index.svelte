@@ -114,7 +114,6 @@ a.btn.btn-link:focus{
 				{:else}
 				No words entered yet!
 				{/if}
-
 			</div>
 			</div>
 		</div>
