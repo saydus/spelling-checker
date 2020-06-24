@@ -2,20 +2,21 @@ import sirv from 'sirv';
 import express from 'express';
 import compression from 'compression';
 import * as sapper from "@sapper/server";
-const Trie = require('trie');
+// const Trie = require('trie');
+// import Trie from './trie'
 
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 const app = express();
-const library = new Trie();
+// const library = new Trie();
 
 
 
 
-app.use('/jalap', (req, res) => {
-	res.send('Post');
+app.post('/check', (req, res) => {
+	res.send('Xuyyyyy');
 });
 
 app.use(

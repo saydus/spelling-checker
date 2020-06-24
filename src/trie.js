@@ -1,66 +1,52 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Trie = void 0;
 class TrieNode {
-  public isEnding: boolean;
-  public character: string;
-  public children: Map<string, TrieNode>;
-
-  constructor(key?: string) {
-      this.isEnding = false; // flag for if the node is enging a word
-      this.character = key; // character that this node is associated with
-      this.children = new Map<string, TrieNode>(); // its children nodes
-  }
+    constructor(key) {
+        this.isEnding = false; // flag for if the node is enging a word
+        this.character = key; // character that this node is associated with
+        this.children = new Map(); // its children nodes
+    }
 }
- 
 class Trie {
-    private root: TrieNode;
-    private numWords: number;
     constructor() {
         this.numWords = 0;
         this.root = new TrieNode();
     }
-
-
     /**
      * Insert word in the Trie.
      *
      * @param {string} word
      * @memberof Trie
      */
-    public insert(word: string): void {
+    insert(word) {
         let children = this.root.children;
         let level = 0;
-
         for (const char of word) {
             let node;
             if (children.get(char)) {
                 node = children.get(char);
-            } else {
+            }
+            else {
                 node = new TrieNode(char);
                 children.set(char, node);
             }
-
             children = node.children;
-
             if (level++ === word.length - 1) {
                 node.isEnding = true;
             }
         }
-
         this.numWords++;
     }
-
     /**
      * Get number of words in the Trie
-     * 
+     *
      * @returns {number}
      * @memberof Trie
      */
-    public getNumWords(): number {
-      return this.numWords;
+    getNumWords() {
+        return this.numWords;
     }
-
-
-    
-
     /**
      * Check if word is in the Trie.
      *
@@ -68,7 +54,7 @@ class Trie {
      * @returns {boolean}
      * @memberof Trie
      */
-    public search(word: string): boolean {
+    search(word) {
         const node = this.getNode(word);
         // if (node && node.isEnding) {
         //     return true;
@@ -77,7 +63,6 @@ class Trie {
         // }
         return !!node && node.isEnding;
     }
-
     /**
      * Get a node from the Trie.
      *
@@ -85,26 +70,25 @@ class Trie {
      * @returns {TrieNode}
      * @memberof Trie
      */
-    public getNode(word: string): TrieNode | null | undefined{
+    getNode(word) {
         let node = null;
         let currentNode = this.root.children;
-
         for (const char of word) {
             if (currentNode.get(char)) {
                 node = currentNode.get(char);
-                if(node){
-                  currentNode = node.children;
+                if (node) {
+                    currentNode = node.children;
                 }
-                else{
-                  return null;
+                else {
+                    return null;
                 }
-            } else {
+            }
+            else {
                 return null;
             }
         }
         return node;
     }
-
     /**
      * Check if any word in Trie matches given prefix
      *
@@ -112,9 +96,8 @@ class Trie {
      * @returns {boolean}
      * @memberof Trie
      */
-    public startsWith(prefix: string): boolean {
+    startsWith(prefix) {
         return this.getNode(prefix) ? true : false;
     }
 }
-
-export { Trie };
+exports.Trie = Trie;
