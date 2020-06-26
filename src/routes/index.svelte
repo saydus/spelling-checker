@@ -20,7 +20,7 @@ let formatWords = (str) => {
 
 
 // TODO: finish to the working upload of input words as a string
-let checkWords = (input) => {
+let checkWords = () => {
     // async request 
     fetch('/check', {
 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -110,13 +110,10 @@ a.btn.btn-link:focus{
 		<textarea class="form-control" bind:value={input} aria-label="With textarea" placeholder="Enter your text here."></textarea>
 	</div> 
 	<div class="button-container text-center">
-		<button type="button" class="btn btn-outline-primary text-center check-button" on:click={checkWords(input)}>Check</button>
+		<button type="button" class="btn btn-outline-primary text-center check-button" on:click={checkWords}>Check</button>
 	</div>
 
 
-
-
-	
 	<!-- Show only if words are entered --> 
 	<div id="accordion">
 		<div class="card">
