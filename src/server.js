@@ -16,7 +16,7 @@ const app = express();
 
 
 app.post('/check', (req, res) => {
-	res.send('ewf: uyyyyy');
+	res.send('true');
 });
 
 app.use(
