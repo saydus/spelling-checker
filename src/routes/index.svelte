@@ -16,24 +16,21 @@ let splitWords = (words) => {
 let formatWords = (str) => {
 	return splitWords(str).map(getLettersOnly).filter(Boolean);
 }
+$: formatted_words = formatWords(input).map((word) => ' ' + word);
 
+$: words_json = {"words" : formatted_words};
 
-
-// TODO: finish to the working upload of input words as a string
 let checkWords = () => {
     // async request 
     fetch('/check', {
-		method: 'POST', // *GET, POST, PUT, DELETE, etc.
-		mode: 'cors', // no-cors, *cors, same-origin
-		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: 'same-origin', // include, *same-origin, omit
+		method: 'POST', // *GET, POST, PUT, DELETE, etc. 
 		headers: {
-		'Content-Type': 'text/plain'
-		// 'Content-Type': 'application/x-www-form-urlencoded',
-		},
-		redirect: 'follow', // manual, *follow, error
-		referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-		body: JSON.stringify(input) // body data type must match "Content-Type" header
+		'Content-Type': 'application/json',
+		// 'Content-Type': 'text/plain' 
+		}, 
+		// body: JSON.stringify(input) // body data type must match "Content-Type" header
+		body: JSON.stringify(words_json),
+		// body: formatted_words
 	})
 	.then(response => response.json())
 	.then(data => {
@@ -43,6 +40,7 @@ let checkWords = () => {
 		console.error('Error:', error);
 	});
 }
+ 
 
 
 </script>
@@ -126,7 +124,7 @@ a.btn.btn-link:focus{
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
 				{#if input.length != 0}
-				{formatWords(input).map((word) => ' ' + word)}
+				{formatted_words}
 				{:else}
 				No words entered yet!
 				{/if}

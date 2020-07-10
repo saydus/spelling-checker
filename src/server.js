@@ -5,18 +5,31 @@ import * as sapper from "@sapper/server";
 // const Trie = require('trie');
 // import Trie from './trie'
 
+const bodyParser = require('body-parser')
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 const app = express();
 // const library = new Trie();
-
-
+ 
+ 
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 app.post('/check', (req, res) => {
-	res.send('true');
+	console.log(req.body);
+	// if words are all valid
+		// res.send('true');
+	
+	let incorrectWords = [];	
+	// else, send a list of invalid words
+	res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ allCorrect: false, words: incorrectWords}));
 });
 
 app.use(
