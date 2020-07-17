@@ -17,11 +17,8 @@ const app = express();
 // create application/json parser
 var jsonParser = bodyParser.json()
  
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-
-app.post('/check', (req, res) => {
+app.post('/check', jsonParser, (req, res) => {
 	console.log(req.body);
 	// if words are all valid
 		// res.send('true');

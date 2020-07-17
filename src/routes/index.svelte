@@ -16,25 +16,23 @@ let splitWords = (words) => {
 let formatWords = (str) => {
 	return splitWords(str).map(getLettersOnly).filter(Boolean);
 }
-$: formatted_words = formatWords(input).map((word) => ' ' + word);
+$: formatted_words = formatWords(input);
 
 $: words_json = {"words" : formatted_words};
 
 let checkWords = () => {
     // async request 
     fetch('/check', {
-		method: 'POST', // *GET, POST, PUT, DELETE, etc. 
+		method: 'POST',  
 		headers: {
+		'Accept' : 'application/json, text/plain, */*', 
 		'Content-Type': 'application/json',
-		// 'Content-Type': 'text/plain' 
-		}, 
-		// body: JSON.stringify(input) // body data type must match "Content-Type" header
-		body: JSON.stringify(words_json),
-		// body: formatted_words
+ 		},  
+		body: JSON.stringify(words_json)
 	})
 	.then(response => response.json())
 	.then(data => {
-		console.log('Success:', data);
+		console.log('Success:' + data.words);
 	})
 	.catch((error) => {
 		console.error('Error:', error);
@@ -48,19 +46,19 @@ let checkWords = () => {
 
 <style>
 
-a.btn.btn-link{
+.btn.btn-link{
 	color: #007bff;
 }
 
-a.btn.btn-link:hover{
+.btn.btn-link:hover{
 	background: #f8f8f8;
 
 }
 
-a.btn.btn-link:active{
+.btn.btn-link:active{
 	background: #f8f8f8; 
 }
-a.btn.btn-link:focus{
+.btn.btn-link:focus{
 	background: #f8f8f8;
 	border: none;
 	box-shadow: none;
@@ -117,14 +115,14 @@ a.btn.btn-link:focus{
 		<div class="card">
 			<div class="card-header" id="headingOne">
 			<h5 class="mb-0">
-				<a class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Words entered:</a>
+				<span class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Words entered:</span>
 			</h5>
 			</div>
 
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
 				{#if input.length != 0}
-				{formatted_words}
+				{formatted_words.map((word) => " " + word)}
 				{:else}
 				No words entered yet!
 				{/if}
