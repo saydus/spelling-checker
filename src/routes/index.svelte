@@ -1,6 +1,7 @@
 
 <script>
 let input = '';
+let incorrectWords = '';
 
 let getLettersOnly = (word) => {
 	// Replace all non-numeric 
@@ -12,6 +13,7 @@ let splitWords = (words) => {
 	return words.split(/[. ,:]+/)
 	// return words.split(/(?:,| )+/);  found this on the web 
 }
+
 
 let formatWords = (str) => {
 	return splitWords(str).map(getLettersOnly).filter(Boolean);
@@ -32,7 +34,17 @@ let checkWords = () => {
 	})
 	.then(response => response.json())
 	.then(data => {
-		console.log('Success:' + data.words);
+		console.log(data);
+		if (data.allCorrect){
+			// show all words correct
+			console.log("Here")
+		}
+		else{
+			// show incorrect words
+			console.log("There")
+			incorrectWords = data.incorrectWords.map((word) => " " + word);
+		}
+
 	})
 	.catch((error) => {
 		console.error('Error:', error);
@@ -52,7 +64,6 @@ let checkWords = () => {
 
 .btn.btn-link:hover{
 	background: #f8f8f8;
-
 }
 
 .btn.btn-link:active{
@@ -91,7 +102,7 @@ let checkWords = () => {
 		
 	<div class="alert alert-danger" role="alert">
 		<h5>These words are not in the library:</h5>
-		{input}
+		{incorrectWords}
 		<br> 
 		<form action="/add">
 		<input type="hidden" value="Salam, papalam, xuy, pizda" >

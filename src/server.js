@@ -2,8 +2,8 @@ import sirv from 'sirv';
 import express from 'express';
 import compression from 'compression';
 import * as sapper from "@sapper/server";
-// const Trie = require('trie');
-// import Trie from './trie'
+
+import Trie from './trie';
 
 const bodyParser = require('body-parser')
 
@@ -11,22 +11,50 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 const app = express();
-// const library = new Trie();
+const dictionary = new Trie();
  
  
 // create application/json parser
 var jsonParser = bodyParser.json()
  
 
+let getLettersOnly = (word) => {
+	// Replace all non-numeric 
+	return word.replace(/[^a-zA-Z_]/g, '').toLowerCase();
+}
+
+let splitWords = (words) => {
+	// Use regular expression to split by comma or whitespace
+	return words.split(/[. ,:]+/)
+	// return words.split(/(?:,| )+/);  found this on the web 
+}
+
+let formatWords = (str) => {
+	return splitWords(str).map(getLettersOnly).filter(Boolean);
+}
+
+
+
 app.post('/check', jsonParser, (req, res) => {
-	console.log(req.body);
-	// if words are all valid
-		// res.send('true');
+	let userWords = req.body.words; 
+
+	userWords = formatWords(userWords.toString());
+
+	let isCorrect = true;
+	let incorrectWords = [];
 	
-	let incorrectWords = [];	
-	// else, send a list of invalid words
+
+	userWords.forEach((word)=>{
+		if(!dictionary.search(word)){ // if word is not in dictionary
+			incorrectWords.push(word);//push word to incorrect words
+			isCorrect = false;
+		}
+	});
+
+	
+	// send response
 	res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ allCorrect: false, words: incorrectWords}));
+    res.end(JSON.stringify({ allCorrect: isCorrect, words: incorrectWords}));
 });
 
 app.use(
