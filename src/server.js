@@ -32,10 +32,12 @@ const lineReader = require('line-reader');
 
 
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
 
-
-var jsonParser = bodyParser.json()
  
 
 let getLettersOnly = (word) => {
@@ -60,17 +62,40 @@ let addFileToTrie = (filename) =>{
 	});
 }
 
+
+
 // Add standard English language
 addFileToTrie('words_alpha.txt');
 
 
-app.post('/add', jsonParser, (req, res) => {
+app.post('/add',  (req, res) => {
 	// add words from json to the Trie structure
-	
+	console.log(req.body.words);
+	let words = req.body.words;
+	words.forEach((word) => {
+		dictionary.insert(word);
+	})
+
+	// send response
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify({ success: true}));
 });
 
 
-app.post('/check', jsonParser, (req, res) => {
+app.post('/addfast',  (req, res) => {
+	// add words from json to the Trie structure
+	console.log(req.body.words);
+	let words = req.body.words.split(',');
+	words.forEach((word) => {
+		dictionary.insert(word);
+	})
+
+	// redirect 
+	res.redirect('/');
+});
+
+
+app.post('/check', (req, res) => {
 	let userWords = req.body.words; 
 
 	userWords = formatWords(userWords.toString());
@@ -78,8 +103,6 @@ app.post('/check', jsonParser, (req, res) => {
 	let isCorrect = true;
 	let incorrectWords = [];
 	
-
-
 	userWords.forEach((word)=>{
 		if(!dictionary.search(word)){ // if word is not in dictionary
 			incorrectWords.push(word);//push word to incorrect words
@@ -87,11 +110,12 @@ app.post('/check', jsonParser, (req, res) => {
 		}
 	});
 
-	
 	// send response
 	res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ allCorrect: isCorrect, words: incorrectWords}));
 });
+
+
 
 app.use(
 	compression({ threshold: 0 }),

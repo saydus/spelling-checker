@@ -44,12 +44,8 @@ class Trie {
      * @memberof Trie
      */
     public search(word: string): boolean {
-        const node = this.getNode(word);
-        if (node && node.isLeaf) {
-            return true;
-        } else {
-            return false;
-        }
+        const node = this.getNode(word); 
+        return !!node && node.isLeaf;
     }
 
     /**

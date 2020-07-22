@@ -1,5 +1,7 @@
 
 <script>
+import {slide, fade} from "svelte/transition";
+
 let input = '';
 let incorrectWords = '';
 
@@ -22,6 +24,9 @@ $: formatted_words = formatWords(input);
 
 $: words_json = {"words" : formatted_words};
 
+let displayCorrect = false;
+let displayIncorrect = false;
+
 let checkWords = () => {
     // async request 
     fetch('/check', {
@@ -36,13 +41,17 @@ let checkWords = () => {
 	.then(data => {
 		console.log(data);
 		if (data.allCorrect){
+			displayCorrect = true;
+			displayIncorrect = false;
 			// show all words correct
 			console.log("All words correct")
 		}
 		else{
-			
+			displayCorrect = false;
+			displayIncorrect = true;
+
 			// show incorrect words 
-			incorrectWords = data.words.map((word) => " " + word);
+			incorrectWords = data.words;
 		}
 
 	})
@@ -95,20 +104,24 @@ let checkWords = () => {
 	<h1 class="text-center heading">Spelling Checker</h1>
 	<!-- If all words are right: -->
 
+	{#if displayCorrect}
+		<div transition:fade class="alert alert-success words-status" role="alert">
+			All words are correct!
+		</div>
+	{/if}
 
-	<div class="alert alert-success words-status" role="alert">
-		All words are correct!
-	</div>
-		
-	<div class="alert alert-danger" role="alert">
-		<h5>These words are not in the library:</h5>
-		{incorrectWords}
-		<br> 
-		<form action="/add">
-		<input type="hidden" value="Salam, papalam, xuy, pizda" >
-		<input type="submit" class="btn btn-outline-primary submit-btn" value="Add these words">
-		</form> 
-	</div>
+	{#if displayIncorrect}
+		<div transition:fade class="alert alert-danger" role="alert">
+			<h5>These words are not in the library:</h5>
+			{incorrectWords.map((word) => " " + word)}
+			<br> 
+			<form action="/addfast" method="POST">
+				<input type="hidden" name="words" value={incorrectWords}>
+				<input type="submit" class="btn btn-outline-primary submit-btn" value="Add these words immediately">
+			</form> 
+
+		</div>
+	{/if}
 
 	<div class="input-group">
 		<div class="input-group-prepend">
