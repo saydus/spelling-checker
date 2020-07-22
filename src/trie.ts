@@ -1,23 +1,11 @@
-class TrieNode {
-  public isEnding: boolean;
-  public character: string;
-  public children: Map<string, TrieNode>;
+import { TrieNode } from "./node";
 
-  constructor(key?: string) {
-      this.isEnding = false; // flag for if the node is enging a word
-      this.character = key; // character that this node is associated with
-      this.children = new Map<string, TrieNode>(); // its children nodes
-  }
-}
- 
 class Trie {
     private root: TrieNode;
-    private numWords: number;
+
     constructor() {
-        this.numWords = 0;
         this.root = new TrieNode();
     }
-
 
     /**
      * Insert word in the Trie.
@@ -37,32 +25,19 @@ class Trie {
                 node = new TrieNode(char);
                 children.set(char, node);
             }
+            if (node){
+                children = node.children;
 
-            children = node.children;
-
-            if (level++ === word.length - 1) {
-                node.isEnding = true;
+                if (level++ === word.length - 1) {
+                    node.isLeaf = true;
+                }
             }
+            
         }
-
-        this.numWords++;
     }
 
     /**
-     * Get number of words in the Trie
-     * 
-     * @returns {number}
-     * @memberof Trie
-     */
-    public getNumWords(): number {
-      return this.numWords;
-    }
-
-
-    
-
-    /**
-     * Check if word is in the Trie.
+     * Check if word exists in the Trie.
      *
      * @param {string} word
      * @returns {boolean}
@@ -70,12 +45,11 @@ class Trie {
      */
     public search(word: string): boolean {
         const node = this.getNode(word);
-        // if (node && node.isEnding) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
-        return !!node && node.isEnding;
+        if (node && node.isLeaf) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -85,23 +59,19 @@ class Trie {
      * @returns {TrieNode}
      * @memberof Trie
      */
-    public getNode(word: string): TrieNode | null | undefined{
+    public getNode(word: string)  {
         let node = null;
         let currentNode = this.root.children;
 
         for (const char of word) {
-            if (currentNode.get(char)) {
-                node = currentNode.get(char);
-                if(node){
-                  currentNode = node.children;
-                }
-                else{
-                  return null;
-                }
+            node = currentNode.get(char);
+            if (node) {
+                currentNode = node.children;
             } else {
                 return null;
             }
         }
+
         return node;
     }
 

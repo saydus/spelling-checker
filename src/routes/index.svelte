@@ -37,12 +37,12 @@ let checkWords = () => {
 		console.log(data);
 		if (data.allCorrect){
 			// show all words correct
-			console.log("Here")
+			console.log("All words correct")
 		}
 		else{
-			// show incorrect words
-			console.log("There")
-			incorrectWords = data.incorrectWords.map((word) => " " + word);
+			
+			// show incorrect words 
+			incorrectWords = data.words.map((word) => " " + word);
 		}
 
 	})

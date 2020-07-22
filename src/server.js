@@ -3,18 +3,38 @@ import express from 'express';
 import compression from 'compression';
 import * as sapper from "@sapper/server";
 
-import Trie from './trie';
+import Trie from './trie.js';
 
 const bodyParser = require('body-parser')
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
-const app = express();
-const dictionary = new Trie();
- 
- 
-// create application/json parser
+const app = express(); 
+  
+const dictionary = new Trie.Trie();
+const lineReader = require('line-reader');
+
+
+// vanilla JS solution that only works with \n type 
+// var fs = require('fs'),
+//     readline = require('readline');
+
+// var rd = readline.createInterface({
+//     input: fs.createReadStream('words_alpha.txt'),
+//     output: process.stdout,
+//     console: false
+// });
+
+// rd.on('line', function(line) {
+//     dictionary
+// });
+
+
+
+
+
+
 var jsonParser = bodyParser.json()
  
 
@@ -25,14 +45,29 @@ let getLettersOnly = (word) => {
 
 let splitWords = (words) => {
 	// Use regular expression to split by comma or whitespace
-	return words.split(/[. ,:]+/)
-	// return words.split(/(?:,| )+/);  found this on the web 
+	return words.split(/[. ,:]+/);
 }
 
 let formatWords = (str) => {
 	return splitWords(str).map(getLettersOnly).filter(Boolean);
 }
 
+let addFileToTrie = (filename) =>{
+	lineReader.eachLine(filename, (line, last) => {
+		// console.log(line);
+		dictionary.insert(line.toString()); 
+		// last is a boolean to indicate last line / not used for now
+	});
+}
+
+// Add standard English language
+addFileToTrie('words_alpha.txt');
+
+
+app.post('/add', jsonParser, (req, res) => {
+	// add words from json to the Trie structure
+	
+});
 
 
 app.post('/check', jsonParser, (req, res) => {
@@ -43,6 +78,7 @@ app.post('/check', jsonParser, (req, res) => {
 	let isCorrect = true;
 	let incorrectWords = [];
 	
+
 
 	userWords.forEach((word)=>{
 		if(!dictionary.search(word)){ // if word is not in dictionary
