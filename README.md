@@ -1,4 +1,4 @@
-# Spelling Checker in Typescript
+# Spelling Checker 
 
 This spelling checker will allow you to quickly validate your custom text input by just inserting it in the browser page. The usage of Trie data structure on back-end allows for a fast word-lookup, which makes the process of both adding custom dictionaries and validating text superfast. 
 
