@@ -4,9 +4,6 @@ This spelling checker will allow you to quickly validate your custom text input 
 
 The default dictionary comes with all English words in it. You can overwrite it to check some other language. The website will allow adding more words to the dictionary, allowing to crowd-source the language vocabulary.
 
-<br/>
-
-
 ## Getting started
 Remember to `npm install` packages before running. To run the application: first, `npm run tsc`, and then, `npm start`.
 
