@@ -6,7 +6,11 @@ The default dictionary comes with all English words in it. You can overwrite it 
 
 ## Getting started
 
-Remember to `npm install` packages before running. To run the application: first, `npm run tsc`, and then, `npm start`.
+Remember to `npm install` packages before running. To run the application: first, `npm run tsc`, `npm run build`, and `npm start`.
+
+## Adding Custom Dictionary
+
+The `words_alpha.txt` in the root of the project contains an example of a dictionary used for populating the Trie. By default, the script uses the words in the file for the initial vocabulary stored. To customize your dictionary, you can either change the file, or add it in the `/add` page of the application.
 
 ### Validating text
 
