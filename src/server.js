@@ -48,7 +48,6 @@ addFileToTrie("words_alpha.txt");
 
 app.post("/add", (req, res) => {
   // add words from json to the Trie structure
-  console.log(req.body.words);
   let words = req.body.words;
   words.forEach((word) => {
     dictionary.insert(word);
@@ -61,7 +60,6 @@ app.post("/add", (req, res) => {
 
 app.post("/addfast", (req, res) => {
   // add words from json to the Trie structure
-  console.log(req.body.words);
   let words = req.body.words.split(",");
   words.forEach((word) => {
     dictionary.insert(word);

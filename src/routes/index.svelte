@@ -1,5 +1,5 @@
 <script>
-	import { slide, fade } from "svelte/transition";
+	import { fade } from "svelte/transition";
 
 	let input = "";
 	let incorrectWords = [];
@@ -17,8 +17,8 @@
 	let formatWords = (str) => {
 		return splitWords(str).map(getLettersOnly).filter(Boolean);
 	};
-	$: formatted_words = formatWords(input);
 
+	$: formatted_words = formatWords(input);
 	$: words_json = { words: formatted_words };
 
 	let displayCorrect = false;
@@ -36,7 +36,6 @@
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				if (data.allCorrect) {
 					// show all words correct
 					displayCorrect = true;
