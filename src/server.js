@@ -16,21 +16,6 @@ const dictionary = new Trie.Trie();
 const lineReader = require('line-reader');
 
 
-// vanilla JS solution that only works with \n type 
-// var fs = require('fs'),
-//     readline = require('readline');
-
-// var rd = readline.createInterface({
-//     input: fs.createReadStream('words_alpha.txt'),
-//     output: process.stdout,
-//     console: false
-// });
-
-// rd.on('line', function(line) {
-//     dictionary
-// });
-
-
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -105,7 +90,7 @@ app.post('/check', (req, res) => {
 	
 	userWords.forEach((word)=>{
 		if(!dictionary.search(word)){ // if word is not in dictionary
-			incorrectWords.push(word);//push word to incorrect words
+			incorrectWords.push(word); //push word to incorrect words
 			isCorrect = false;
 		}
 	});
@@ -127,6 +112,5 @@ app.use(
 app.listen(PORT, function () {
 	console.log(`App is listening on port + ${PORT}`);
 });
- 
 
  
