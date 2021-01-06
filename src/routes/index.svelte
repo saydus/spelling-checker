@@ -3,7 +3,7 @@
 import {slide, fade} from "svelte/transition";
 
 let input = '';
-let incorrectWords = '';
+let incorrectWords = [];
 
 let getLettersOnly = (word) => {
 	// Replace all non-numeric 
@@ -41,10 +41,9 @@ let checkWords = () => {
 	.then(data => {
 		console.log(data);
 		if (data.allCorrect){
+			// show all words correct
 			displayCorrect = true;
 			displayIncorrect = false;
-			// show all words correct
-			console.log("All words correct")
 		}
 		else{
 			displayCorrect = false;
