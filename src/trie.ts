@@ -79,7 +79,7 @@ class Trie {
      * @memberof Trie
      */
     public startsWith(prefix: string): boolean {
-        return this.getNode(prefix) ? true : false;
+        return !!this.getNode(prefix);
     }
 }
 
